@@ -1,7 +1,16 @@
-import { MapPin, Mail, Phone, ExternalLink } from "lucide-react";
+import { MapPin, Mail, ExternalLink } from "lucide-react";
 import dtuLogo from "@/assets/dtu-logo.png";
 
 const Footer = () => {
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const targetId = href.replace("#", "");
+    const element = document.getElementById(targetId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  };
+
   return (
     <footer className="bg-foreground text-background">
       {/* Main Footer */}
@@ -40,7 +49,8 @@ const Footer = () => {
                   <li key={link.label}>
                     <a 
                       href={link.href}
-                      className="text-sm text-background/70 hover:text-gold transition-colors inline-flex items-center gap-1"
+                      onClick={(e) => handleSmoothScroll(e, link.href)}
+                      className="text-sm text-background/70 hover:text-gold transition-colors inline-flex items-center gap-1 cursor-pointer"
                     >
                       {link.label}
                     </a>

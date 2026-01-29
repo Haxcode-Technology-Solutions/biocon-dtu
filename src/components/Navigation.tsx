@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import dtuLogo from "@/assets/dtu-logo.png";
+import { useRegistration } from "@/contexts/RegistrationContext";
 
 const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { openRegistration } = useRegistration();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,6 +26,21 @@ const Navigation = () => {
     { label: "Committee", href: "#committee" },
   ];
 
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    e.preventDefault();
+    const targetId = href.replace("#", "");
+    const element = document.getElementById(targetId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    setIsMobileMenuOpen(false);
+  };
+
+  const scrollToTop = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
@@ -35,7 +52,7 @@ const Navigation = () => {
       <div className="container-narrow">
         <div className="flex items-center justify-between h-16 md:h-20 px-4">
           {/* Logo */}
-          <a href="#" className="flex items-center gap-3">
+          <a href="#" onClick={scrollToTop} className="flex items-center gap-3">
             <img 
               src={dtuLogo} 
               alt="DTU Logo" 
@@ -55,6 +72,7 @@ const Navigation = () => {
               <a
                 key={link.label}
                 href={link.href}
+                onClick={(e) => handleSmoothScroll(e, link.href)}
                 className={`text-sm font-medium transition-colors hover:text-primary ${
                   isScrolled ? "text-foreground" : "text-primary-foreground"
                 }`}
@@ -62,7 +80,11 @@ const Navigation = () => {
                 {link.label}
               </a>
             ))}
-            <Button size="sm" variant={isScrolled ? "default" : "gold"}>
+            <Button 
+              size="sm" 
+              variant={isScrolled ? "default" : "gold"}
+              onClick={() => openRegistration("register")}
+            >
               Register
             </Button>
           </div>
@@ -86,13 +108,21 @@ const Navigation = () => {
                 <a
                   key={link.label}
                   href={link.href}
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={(e) => handleSmoothScroll(e, link.href)}
                   className="block text-foreground font-medium py-2 hover:text-primary transition-colors"
                 >
                   {link.label}
                 </a>
               ))}
-              <Button className="w-full mt-4">Register</Button>
+              <Button 
+                className="w-full mt-4"
+                onClick={() => {
+                  openRegistration("register");
+                  setIsMobileMenuOpen(false);
+                }}
+              >
+                Register
+              </Button>
             </div>
           </div>
         )}

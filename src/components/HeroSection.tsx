@@ -2,8 +2,11 @@ import heroBg from "@/assets/hero-bg.jpg";
 import dtuLogo from "@/assets/dtu-logo.png";
 import { Calendar, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useRegistration } from "@/contexts/RegistrationContext";
 
 const HeroSection = () => {
+  const { openRegistration } = useRegistration();
+
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image */}
@@ -78,10 +81,20 @@ const HeroSection = () => {
           className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in"
           style={{ animationDelay: "0.7s" }}
         >
-          <Button size="lg" variant="gold" className="min-w-[180px]">
+          <Button 
+            size="lg" 
+            variant="gold" 
+            className="min-w-[180px]"
+            onClick={() => openRegistration("register")}
+          >
             Register Now
           </Button>
-          <Button size="lg" variant="outline-hero" className="min-w-[180px]">
+          <Button 
+            size="lg" 
+            variant="outline-hero" 
+            className="min-w-[180px]"
+            onClick={() => openRegistration("abstract")}
+          >
             Submit Abstract
           </Button>
         </div>
