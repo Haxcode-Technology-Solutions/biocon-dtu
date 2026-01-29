@@ -7,8 +7,12 @@ import SpeakersSection from "@/components/SpeakersSection";
 import DatesSection from "@/components/DatesSection";
 import CommitteeSection from "@/components/CommitteeSection";
 import Footer from "@/components/Footer";
+import RegistrationDialog from "@/components/RegistrationDialog";
+import { RegistrationProvider, useRegistration } from "@/contexts/RegistrationContext";
 
-const Index = () => {
+const IndexContent = () => {
+  const { isOpen, defaultTab, closeRegistration } = useRegistration();
+
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
@@ -20,7 +24,20 @@ const Index = () => {
       <DatesSection />
       <CommitteeSection />
       <Footer />
+      <RegistrationDialog 
+        open={isOpen} 
+        onOpenChange={closeRegistration} 
+        defaultTab={defaultTab}
+      />
     </div>
+  );
+};
+
+const Index = () => {
+  return (
+    <RegistrationProvider>
+      <IndexContent />
+    </RegistrationProvider>
   );
 };
 
